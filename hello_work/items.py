@@ -8,5 +8,7 @@ import scrapy
 
 class HelloWorkItem(scrapy.Item):
     company_name = scrapy.Field()
-    employment_status = scrapy.Field()
+    representative = scrapy.Field()
+    year_of_establishment = scrapy.Field()
+    location = scrapy.Field()
     business_number = scrapy.Field()

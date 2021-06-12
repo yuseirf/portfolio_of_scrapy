@@ -3,11 +3,6 @@ import scrapy
 
 from hello_work.items import HelloWorkItem
 
-"""
-ターミナル内で「scrapy crawl hello_work_spider」で実行できます。
-時間の関係でおおよそ420ページ、92アイテムのクロールで止めていますが、取れたデータは「information.csv」をご覧ください。
-"""
-
 
 class HelloWorkSpiderSpider(scrapy.Spider):
     name = 'hello_work_spider'
@@ -48,7 +43,6 @@ class HelloWorkSpiderSpider(scrapy.Spider):
         item = HelloWorkItem()
         table_selectors = response.css('table.mytable-new > tr')
 
-        # 会社名や雇用形態、事業者番号は非公開の場合があり、それらのデータがない item もあります。
         for table_selector in table_selectors:
             th_content = table_selector.css('th ::text').get()
             td_content = table_selector.css('td ::text').get()
@@ -56,9 +50,15 @@ class HelloWorkSpiderSpider(scrapy.Spider):
             if "会社名" in th_content:
                 company_name = company_name_content.replace('\u3000', '')
                 item['company_name'] = company_name
-            if "雇用形態" in th_content:
-                employment_status = td_content.replace(' ', '')
-                item['employment_status'] = employment_status
+            if "代表者名" in th_content:
+                representative = td_content.replace('\u3000', '')
+                item['representative'] = representative
+            if "設立" in th_content:
+                year_of_establishment = td_content
+                item['year_of_establishment'] = year_of_establishment
+            if "会社所在地" in th_content:
+                location = td_content.replace('\u3000', '')
+                item['location'] = location
             if "事業所番号" in th_content:
                 business_number = td_content
                 item['business_number'] = business_number
