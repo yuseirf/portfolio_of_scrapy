@@ -1,4 +1,3 @@
-import pdb
 import scrapy
 
 from hello_work.items import HelloWorkItem
